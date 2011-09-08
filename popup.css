@@ -47,6 +47,11 @@ table.pretty caption {
   font-size:.9em;color:black;margin:0px;font-weight:bolder;
 }
 
+#idleButton {
+  float:right;
+  position:relative;
+  top: -5px;
+}
 
 #corralHolder {
   display:none;
