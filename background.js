@@ -66,27 +66,24 @@ function checkToClose() {
   var rightNow = new Date().getTime();
   var toCut = new Array();
   for ( var i=0; i < tabNum; i++ ) {
-	var timeGone = parseInt(rightNow) - parseInt(TAB_ACTION[TAB_IDS[i]]);
-	var lock_check = locked_ids.indexOf(TAB_IDS[i]);
-        if ( timeGone >= STAY_OPEN && lock_check == -1) {
-          try {
-          chrome.tabs.remove(TAB_IDS[i]);
-	  addToCorral(TAB_IDS[i],TAB_TITLE[TAB_IDS[i]],
-		      TAB_URL[TAB_IDS[i]],TAB_ICON[TAB_IDS[i]],
-		      new Date().getTime());
-          } catch(e) {
-
-          }
-
-          toCut.push(TAB_IDS[i]);
-        } else {
-	    // if tab is locked...keep it updated...
-	    if ( lock_check > -1 ) {
-	        TAB_ACTION[TAB_IDS[i]] = new Date().getTime();
-	    }
-	}
+    var timeGone = parseInt(rightNow) - parseInt(TAB_ACTION[TAB_IDS[i]]);
+    var lock_check = locked_ids.indexOf(TAB_IDS[i]);
+    if ( timeGone >= STAY_OPEN && lock_check == -1) {
+      try {
+        chrome.tabs.remove(TAB_IDS[i]);
+        addToCorral(TAB_IDS[i],TAB_TITLE[TAB_IDS[i]],
+          TAB_URL[TAB_IDS[i]],TAB_ICON[TAB_IDS[i]],
+          new Date().getTime());
+      } catch(e) {
+      }
+      toCut.push(TAB_IDS[i]);
+    } else {
+      // if tab is locked...keep it updated...
+      if ( lock_check > -1 ) {
+        TAB_ACTION[TAB_IDS[i]] = new Date().getTime();
+      }
+    }
   }
-
   for ( var x=0;x < toCut.length;x++ ) {
       TAB_IDS.splice(TAB_IDS.indexOf(toCut[x]),1);
   }
