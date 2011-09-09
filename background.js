@@ -6,6 +6,7 @@ var TAB_ICON = new Object();
 var TAB_IDS = new Array();
 var STAY_OPEN = 420000; //7 minutes
 //var STAY_OPEN = 15000; //DEBUG
+var IS_IDLE = 0;
 
 function updateTabs(tab) {
 
@@ -56,6 +57,7 @@ function initTabs(tabs) {
 
 function checkToClose() {
   refreshOptions();
+  if (IS_IDLE == 1) return;
   chrome.tabs.getSelected(null,updateTabs);
 
   var tabNum = TAB_IDS.length;
@@ -107,6 +109,19 @@ function refreshOptions() {
   if ( m ) {
     STAY_OPEN = parseInt(m) * 60000;
     //STAY_OPEN = 15000; //DEBUG
+  }
+  var i = localStorage["is_idle"];
+  if ( i != IS_IDLE) {
+    IS_IDLE = i;
+    if (IS_IDLE == 0) { resetTabs() };
+  }
+}
+
+// Reset the action time on all open tabs
+function resetTabs() {
+  var tabNum = TAB_IDS.length;
+  for ( var i=0; i < tabNum; i++ ) {
+    TAB_ACTION[TAB_IDS[i]] = new Date().getTime();
   }
 }
 

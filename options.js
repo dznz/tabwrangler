@@ -17,11 +17,24 @@ function save_options() {
 }
 
 function restore_options() {
+  load_minutes_inactive()
+  load_idle_state();
+}
+
+function load_minutes_inactive() {
   var m = localStorage["minutes_inactive"];
   if (!m) {
     m = 7; //default
   }
+  document.getElementById("minutes_inactive").value = m;
+}
 
-document.getElementById("minutes_inactive").value = m;
-
+function load_idle_state() {
+  var i = localStorage["is_idle"];
+  var idleButton = document.getElementById("idleButton");
+  if (i == 0) {
+    idleButton.className = "";
+  } else {
+    idleButton.className = "toggled";
+  }
 }
